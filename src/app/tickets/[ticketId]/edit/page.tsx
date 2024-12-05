@@ -2,10 +2,10 @@ import { notFound } from 'next/navigation'
 
 import { getTicket } from '@/features/ticket/queries/get-ticket'
 import { CardCompact } from '@/components/card-compact'
-import { TicketEditForm } from '@/features/ticket/components/ticket-edit-form'
+import { TicketUpsertForm } from '@/features/ticket/components/ticket-upsert-form'
 
 interface TicketEditPageProps {
-  params: { ticketId: string }
+  params: Promise<{ ticketId: string }>
 }
 
 const TicketEditPage = async ({ params }: TicketEditPageProps) => {
@@ -22,7 +22,7 @@ const TicketEditPage = async ({ params }: TicketEditPageProps) => {
         title="Edit Ticket"
         description="Edit the ticket"
         className="w-full max-w-[420px] animate-fade-in-from-top"
-        content={<TicketEditForm ticket={ticket} />}
+        content={<TicketUpsertForm ticket={ticket} />}
       />
     </div>
   )
