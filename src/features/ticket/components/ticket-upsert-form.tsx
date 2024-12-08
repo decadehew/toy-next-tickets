@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label'
 
 import { upsertTicket } from '../actions/upsert-ticket'
 import { SubmitButton } from '@/components/form/submit-button'
+import { FieldError } from '@/components/form/field-error'
 
 interface TicketUpsertFormProps {
   ticket?: Ticket
@@ -17,6 +18,7 @@ export const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
     upsertTicket.bind(null, ticket?.id),
     {
       message: '',
+      fieldErrors: {},
     }
   )
   return (
@@ -30,6 +32,7 @@ export const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
           (actionState.payload?.get('title') as string) ?? ticket?.title
         }
       />
+      <FieldError actionState={actionState} name="title" />
 
       <Label htmlFor="content">Content</Label>
       <Input
@@ -40,6 +43,7 @@ export const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
           (actionState.payload?.get('content') as string) ?? ticket?.content
         }
       />
+      <FieldError actionState={actionState} name="content" />
 
       <SubmitButton label={ticket ? 'Edit' : 'Create'} />
       {actionState.message}
