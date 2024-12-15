@@ -8,11 +8,15 @@ import { redirect } from 'next/navigation'
 import {
   ActionState,
   fromErrorToActionState,
+  toActionState,
 } from '@/components/form/utils/to-action-state'
 
 const UpsertTicketSchema = z.object({
-  title: z.string().min(1).max(191),
-  content: z.string().min(1).max(1024),
+  title: z.string().min(1, '標題不能為空').max(191, '標題不能超過191個字符'),
+  content: z
+    .string()
+    .min(1, '內容不能為空')
+    .max(1024, '內容不能超過1024個字符'),
 })
 
 const upsertTicket = async (
@@ -42,7 +46,7 @@ const upsertTicket = async (
     redirect(ticketPath(id))
   }
 
-  return { message: 'Ticket created!', fieldErrors: {} }
+  return toActionState('SUCCESS', 'Ticket created!')
 }
 
 export { upsertTicket }
