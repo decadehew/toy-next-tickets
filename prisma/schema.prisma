@@ -21,6 +21,8 @@ model Ticket {
   status    TicketStatus @default(OPEN)
   createdAt DateTime     @default(now())
   updatedAt DateTime     @updatedAt
+  deadline  String       @default("2024-12-31")
+  bounty    Int          @default(0)
 }
 
 enum TicketStatus {
