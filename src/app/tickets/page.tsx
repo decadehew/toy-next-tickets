@@ -20,7 +20,6 @@ export default function TicketsPage() {
       <Suspense fallback={<Spinner />}>
         <TicketList />
       </Suspense>
-      {/* <Spinner /> */}
     </div>
   )
 }

@@ -2,11 +2,7 @@
 
 import Link from 'next/link'
 import { Ticket } from '@prisma/client'
-import {
-  LucidePencil,
-  LucideSquareArrowOutUpRight,
-  LucideTrash,
-} from 'lucide-react'
+import { LucidePencil, LucideSquareArrowOutUpRight } from 'lucide-react'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -16,7 +12,7 @@ import { TICKET_ICONS } from '../constants'
 
 import { cn } from '@/lib/utils'
 import { deleteTicket } from '../actions/delete-ticket'
-
+import { DeleteButton } from './delete-button'
 // import { getTickets } from '../queries/get-tickets'
 // import { getTicket } from '../queries/get-ticket'
 
@@ -62,9 +58,7 @@ const TicketItem = ({ ticket, isDetail = false }: TicketItemProps) => {
 
     // 換成 form action 來處理
     <form action={deleteTicket.bind(null, ticket.id)}>
-      <Button size="icon" variant="destructive" type="submit">
-        <LucideTrash className="w-4 h-4" />
-      </Button>
+      <DeleteButton />
     </form>
 
     // TODO: 防止觸發多次
