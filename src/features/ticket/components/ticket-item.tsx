@@ -4,7 +4,13 @@ import Link from 'next/link'
 import { Ticket } from '@prisma/client'
 import { LucidePencil, LucideSquareArrowOutUpRight } from 'lucide-react'
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { ticketEditPath, ticketPath } from '@/paths'
 
@@ -13,6 +19,7 @@ import { TICKET_ICONS } from '../constants'
 import { cn } from '@/lib/utils'
 import { deleteTicket } from '../actions/delete-ticket'
 import { DeleteButton } from './delete-button'
+import { toCurrencyFromCent } from '@/utils/currency'
 // import { getTickets } from '../queries/get-tickets'
 // import { getTicket } from '../queries/get-ticket'
 
@@ -60,8 +67,6 @@ const TicketItem = ({ ticket, isDetail = false }: TicketItemProps) => {
     <form action={deleteTicket.bind(null, ticket.id)}>
       <DeleteButton />
     </form>
-
-    // TODO: 防止觸發多次
   )
 
   return (
@@ -88,6 +93,12 @@ const TicketItem = ({ ticket, isDetail = false }: TicketItemProps) => {
             {ticket.content}
           </span>
         </CardContent>
+        <CardFooter className="flex justify-between">
+          <p className="text-sm text-muted-foreground">{ticket.deadline}</p>
+          <p className="text-sm text-muted-foreground">
+            {toCurrencyFromCent(ticket.bounty)}
+          </p>
+        </CardFooter>
       </Card>
       <div className="flex flex-col gap-y-1">
         {isDetail ? (
