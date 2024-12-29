@@ -2,7 +2,12 @@
 
 import Link from 'next/link'
 import { Ticket } from '@prisma/client'
-import { LucidePencil, LucideSquareArrowOutUpRight } from 'lucide-react'
+import {
+  LucideMoreVertical,
+  LucidePencil,
+  LucideSquareArrowOutUpRight,
+  LucideTrash,
+} from 'lucide-react'
 
 import {
   Card,
@@ -20,8 +25,7 @@ import { cn } from '@/lib/utils'
 import { deleteTicket } from '../actions/delete-ticket'
 import { DeleteButton } from './delete-button'
 import { toCurrencyFromCent } from '@/utils/currency'
-// import { getTickets } from '../queries/get-tickets'
-// import { getTicket } from '../queries/get-ticket'
+import { TicketMoreMenu } from './ticket-more-menu'
 
 interface TicketItemProps {
   // 以下寫法，另一種寫法 optional
@@ -57,16 +61,27 @@ const TicketItem = ({ ticket, isDetail = false }: TicketItemProps) => {
   //   await deleteTicket(ticket.id)
   // }
 
-  const deleteButton = (
-    // 如果不使用 client component
-    // <Button size="icon" variant="destructive" onClick={handleDeleteTicket}>
-    //   <LucideTrash className="w-4 h-4" />
-    // </Button>
+  // const deleteButton = (
+  //   // 如果不使用 client component
+  //   // <Button size="icon" variant="destructive" onClick={handleDeleteTicket}>
+  //   //   <LucideTrash className="w-4 h-4" />
+  //   // </Button>
 
-    // 換成 form action 來處理
-    <form action={deleteTicket.bind(null, ticket.id)}>
-      <DeleteButton />
-    </form>
+  //   // 換成 form action 來處理
+  //   <form action={deleteTicket.bind(null, ticket.id)}>
+  //     <DeleteButton />
+  //   </form>
+  // )
+
+  const moreMenu = (
+    <TicketMoreMenu
+      ticket={ticket}
+      trigger={
+        <Button variant="outline" size="icon">
+          <LucideMoreVertical className="w-4 h-4" />
+        </Button>
+      }
+    />
   )
 
   return (
@@ -104,7 +119,7 @@ const TicketItem = ({ ticket, isDetail = false }: TicketItemProps) => {
         {isDetail ? (
           <>
             {editButton}
-            {deleteButton}
+            {moreMenu}
           </>
         ) : (
           detailButton
