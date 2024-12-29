@@ -6,7 +6,6 @@ import {
   LucideMoreVertical,
   LucidePencil,
   LucideSquareArrowOutUpRight,
-  LucideTrash,
 } from 'lucide-react'
 
 import {
@@ -22,8 +21,6 @@ import { ticketEditPath, ticketPath } from '@/paths'
 import { TICKET_ICONS } from '../constants'
 
 import { cn } from '@/lib/utils'
-import { deleteTicket } from '../actions/delete-ticket'
-import { DeleteButton } from './delete-button'
 import { toCurrencyFromCent } from '@/utils/currency'
 import { TicketMoreMenu } from './ticket-more-menu'
 
