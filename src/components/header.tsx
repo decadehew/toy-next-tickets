@@ -1,10 +1,32 @@
 import Link from 'next/link'
 import { LucideKanban } from 'lucide-react'
 import { buttonVariants } from '@/components/ui/button'
-import { homePath, ticketsPath } from '@/paths'
+import { homePath, ticketsPath, signUpPath, signInPath } from '@/paths'
 import { ThemeSwitcher } from '@/components/theme/theme-switcher'
 
 const Header = () => {
+  const navItems = (
+    <>
+      <Link
+        href={ticketsPath()}
+        className={buttonVariants({ variant: 'default' })}
+      >
+        Tickets
+      </Link>
+      <Link
+        href={signUpPath()}
+        className={buttonVariants({ variant: 'outline' })}
+      >
+        註冊
+      </Link>
+      <Link
+        href={signInPath()}
+        className={buttonVariants({ variant: 'outline' })}
+      >
+        登入
+      </Link>
+    </>
+  )
   return (
     <nav
       className="supports-backdrop-blur:bg-background/60
@@ -29,12 +51,7 @@ const Header = () => {
         {/* <Button asChild variant="outline">
               <Link href={ticketsPath()}>Tickets</Link>
             </Button> */}
-        <Link
-          href={ticketsPath()}
-          className={buttonVariants({ variant: 'default' })}
-        >
-          Tickets
-        </Link>
+        {navItems}
       </div>
     </nav>
   )
