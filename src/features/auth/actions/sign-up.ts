@@ -68,14 +68,20 @@ export const signUp = async (_actionState: ActionState, formData: FormData) => {
     //   success: 'Sign up successful',
     // }
   } catch (error) {
+    // console.log('xxx', error)
     if (
       error instanceof Prisma.PrismaClientKnownRequestError &&
       error.code === 'P2002'
     ) {
-      return toActionState('ERROR', '用户名或邮箱已存在')
+      // console.log('xxx', error)
+      return toActionState(
+        'ERROR',
+        'Either email or username is already in use',
+        formData
+      )
     }
 
-    return fromErrorToActionState(error)
+    return fromErrorToActionState(error, formData)
   }
 
   redirect(ticketsPath())
