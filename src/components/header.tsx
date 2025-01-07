@@ -5,8 +5,13 @@ import { homePath, ticketsPath, signUpPath, signInPath } from '@/paths'
 import { ThemeSwitcher } from '@/components/theme/theme-switcher'
 import { SubmitButton } from '@/components/form/submit-button'
 import { signOut } from '@/features/auth/actions/sign-out'
-const Header = () => {
-  const navItems = (
+import { getAuth } from '@/features/auth/queries/get-auth'
+
+const Header = async () => {
+  const { user } = await getAuth()
+  console.log(user)
+
+  const navItems = user ? (
     <>
       <Link
         href={ticketsPath()}
@@ -14,6 +19,12 @@ const Header = () => {
       >
         Tickets
       </Link>
+      <form action={signOut}>
+        <SubmitButton label="登出" icon={<LucideLogOut />} />
+      </form>
+    </>
+  ) : (
+    <>
       <Link
         href={signUpPath()}
         className={buttonVariants({ variant: 'outline' })}
@@ -26,9 +37,6 @@ const Header = () => {
       >
         登入
       </Link>
-      <form action={signOut}>
-        <SubmitButton label="登出" icon={<LucideLogOut />} />
-      </form>
     </>
   )
   return (

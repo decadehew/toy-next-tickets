@@ -10,7 +10,6 @@ import { z } from 'zod'
 import { prisma } from '@/lib/prisma'
 import { lucia } from '@/lib/lucia'
 import { cookies } from 'next/headers'
-import { Prisma } from '@prisma/client'
 import { redirect } from 'next/navigation'
 import { ticketsPath } from '@/paths'
 
