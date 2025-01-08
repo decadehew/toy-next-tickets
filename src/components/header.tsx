@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link'
 import { LucideKanban, LucideLogOut } from 'lucide-react'
 import { buttonVariants } from '@/components/ui/button'
@@ -5,11 +7,17 @@ import { homePath, ticketsPath, signUpPath, signInPath } from '@/paths'
 import { ThemeSwitcher } from '@/components/theme/theme-switcher'
 import { SubmitButton } from '@/components/form/submit-button'
 import { signOut } from '@/features/auth/actions/sign-out'
-import { getAuth } from '@/features/auth/queries/get-auth'
+import { useAuth } from '@/features/auth/hooks/use-auth'
 
-const Header = async () => {
-  const { user } = await getAuth()
-  console.log(user)
+const Header = () => {
+  // server：會被標記為動態 render
+  // const { user } = await getAuth()
+
+  const { user, isFetched } = useAuth()
+
+  if (!isFetched) {
+    return null
+  }
 
   const navItems = user ? (
     <>
@@ -33,7 +41,7 @@ const Header = async () => {
       </Link>
       <Link
         href={signInPath()}
-        className={buttonVariants({ variant: 'outline' })}
+        className={buttonVariants({ variant: 'default' })}
       >
         登入
       </Link>
@@ -41,7 +49,7 @@ const Header = async () => {
   )
   return (
     <nav
-      className="supports-backdrop-blur:bg-background/60
+      className="animate-header-from-top supports-backdrop-blur:bg-background/60
           bg-background/95 fixed top-0 right-0 left-0 z-20 
           flex w-full justify-between border-b
           px-5 py-2.5 backdrop-blur"

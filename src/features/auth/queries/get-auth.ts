@@ -1,3 +1,10 @@
+'use server'
+
+/**
+ * 使用了 cookies() from next/headers，這個 API 只能在 Server Components 中使用
+ * 我在 header.tsx 中使用，但此組件是 client component，所以必須使用 server action
+ */
+
 import { lucia } from '@/lib/lucia'
 import { cookies } from 'next/headers'
 import { cache } from 'react'
