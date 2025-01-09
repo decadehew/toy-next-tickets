@@ -1,5 +1,13 @@
 'use client'
 
+/**
+ * shadcn-ui 依賴 react-day-picker 套件 版本不相容，導致安裝不成功
+ * 解決：若 npm i 其他packages有失敗，需要強制更新 -f 表示
+ *
+ * 至於此 issue
+ * https://github.com/shadcn-ui/ui/issues/5799
+ */
+
 import { useImperativeHandle, useState } from 'react'
 import { format } from 'date-fns'
 import { LucideCalendar } from 'lucide-react'
