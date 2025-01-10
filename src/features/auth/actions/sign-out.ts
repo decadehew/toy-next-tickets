@@ -1,9 +1,9 @@
 'use server'
 import { getAuth } from '@/features/auth/queries/get-auth'
-import { lucia } from '@/lib/lucia'
 import { signInPath } from '@/paths'
-import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
+import { invalidateSession } from '@/lib/lucia'
+import { deleteSessionCookie } from '@/features/auth/utils/session-cookie'
 
 export const signOut = async () => {
   const { session } = await getAuth()
@@ -12,13 +12,8 @@ export const signOut = async () => {
     redirect(signInPath())
   }
 
-  await lucia.invalidateSession(session.id)
-  const sessionCookie = lucia.createBlankSessionCookie()
-  ;(await cookies()).set(
-    sessionCookie.name,
-    sessionCookie.value,
-    sessionCookie.attributes
-  )
+  await invalidateSession(session.id)
+  await deleteSessionCookie()
 
   redirect(signInPath())
 }

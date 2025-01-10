@@ -1,6 +1,6 @@
 import { getAuth } from '@/features/auth/queries/get-auth'
 import { useState, useEffect } from 'react'
-import { User as AuthUser } from 'lucia'
+import { User } from '@prisma/client'
 import { usePathname } from 'next/navigation'
 
 /**
@@ -8,7 +8,7 @@ import { usePathname } from 'next/navigation'
  * 避免動態 render
  */
 export const useAuth = () => {
-  const [user, setUser] = useState<AuthUser | null>(null)
+  const [user, setUser] = useState<User | null>(null)
   const [isFetched, setIsFetched] = useState(false)
 
   const pathname = usePathname()

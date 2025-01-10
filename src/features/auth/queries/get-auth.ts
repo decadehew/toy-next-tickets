@@ -5,42 +5,20 @@
  * 我在 header.tsx 中使用，但此組件是 client component，所以必須使用 server action
  */
 
-import { lucia } from '@/lib/lucia'
+import { validateSession } from '@/lib/lucia'
 import { cookies } from 'next/headers'
 import { cache } from 'react'
+import { SESSION_COOKIE_NAME } from '@/features/auth/utils/session-cookie'
 
 export const getAuth = cache(async () => {
-  const sessionId =
-    (await cookies()).get(lucia.sessionCookieName)?.value ?? null
+  const sessionToken = (await cookies()).get(SESSION_COOKIE_NAME)?.value ?? null
 
-  if (!sessionId) {
+  if (!sessionToken) {
     return {
       user: null,
       session: null,
     }
   }
 
-  const result = await lucia.validateSession(sessionId)
-
-  try {
-    if (result.session && result.session.fresh) {
-      const sessionCookie = lucia.createSessionCookie(result.session.id)
-      ;(await cookies()).set(
-        sessionCookie.name,
-        sessionCookie.value,
-        sessionCookie.attributes
-      )
-    }
-
-    if (!result.session) {
-      const sessionCookie = lucia.createBlankSessionCookie()
-      ;(await cookies()).set(
-        sessionCookie.name,
-        sessionCookie.value,
-        sessionCookie.attributes
-      )
-    }
-  } catch {}
-
-  return result
+  return await validateSession(sessionToken)
 })
