@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 
 /**
  * 轉換成 client-side render，我猜測：
- * 避免動態 render
+ * 避免動態 render (npm run build 後會有標記為 dynamic render)
  */
 export const useAuth = () => {
   const [user, setUser] = useState<User | null>(null)

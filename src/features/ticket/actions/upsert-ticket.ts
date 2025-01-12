@@ -2,7 +2,7 @@
 
 import { z } from 'zod'
 import { prisma } from '@/lib/prisma'
-import { ticketPath, ticketsPath } from '@/paths'
+import { signInPath, ticketPath, ticketsPath } from '@/paths'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import {
@@ -11,6 +11,7 @@ import {
   toActionState,
 } from '@/components/form/utils/to-action-state'
 import { toCent } from '@/utils/currency'
+import { getAuth } from '@/features/auth/queries/get-auth'
 
 const UpsertTicketSchema = z.object({
   title: z.string().min(1, '標題不能為空').max(191, '標題不能超過191個字符'),
@@ -28,6 +29,11 @@ const upsertTicket = async (
   _actionState: ActionState,
   formData: FormData
 ) => {
+  const { user } = await getAuth()
+  if (!user) {
+    redirect(signInPath())
+  }
+
   try {
     const data = UpsertTicketSchema.parse({
       title: formData.get('title'),
@@ -38,6 +44,7 @@ const upsertTicket = async (
 
     const formattedData = {
       ...data,
+      userId: user.id,
       bounty: toCent(data.bounty),
     }
 

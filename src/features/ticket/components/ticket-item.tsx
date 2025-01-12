@@ -1,7 +1,7 @@
 // 'use client'
 
 import Link from 'next/link'
-import { Ticket } from '@prisma/client'
+import { Prisma } from '@prisma/client'
 import {
   LucideMoreVertical,
   LucidePencil,
@@ -23,13 +23,14 @@ import { TICKET_ICONS } from '../constants'
 import { cn } from '@/lib/utils'
 import { toCurrencyFromCent } from '@/utils/currency'
 import { TicketMoreMenu } from './ticket-more-menu'
+import { TicketWithMetadata } from '@/features/ticket/types'
 
 interface TicketItemProps {
   // 以下寫法，另一種寫法 optional
   // ticket:
   //   | Awaited<ReturnType<typeof getTickets>>[number]
   //   | Awaited<ReturnType<typeof getTicket>>
-  ticket: Ticket
+  ticket: TicketWithMetadata
   isDetail?: boolean
 }
 
@@ -106,7 +107,9 @@ const TicketItem = ({ ticket, isDetail = false }: TicketItemProps) => {
           </span>
         </CardContent>
         <CardFooter className="flex justify-between">
-          <p className="text-sm text-muted-foreground">{ticket.deadline}</p>
+          <p className="text-sm text-muted-foreground">
+            {ticket.deadline} by {ticket.user.username}
+          </p>
           <p className="text-sm text-muted-foreground">
             {toCurrencyFromCent(ticket.bounty)}
           </p>
