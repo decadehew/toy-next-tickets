@@ -11,7 +11,8 @@ import {
   toActionState,
 } from '@/components/form/utils/to-action-state'
 import { toCent } from '@/utils/currency'
-import { getAuth } from '@/features/auth/queries/get-auth'
+import { getAuthOrRedirect } from '@/features/auth/queries/get-auth-or-redirect'
+import { isOwner } from '@/features/auth/utils/is-owner'
 
 const UpsertTicketSchema = z.object({
   title: z.string().min(1, '標題不能為空').max(191, '標題不能超過191個字符'),
@@ -29,12 +30,18 @@ const upsertTicket = async (
   _actionState: ActionState,
   formData: FormData
 ) => {
-  const { user } = await getAuth()
-  if (!user) {
-    redirect(signInPath())
-  }
+  const { user } = await getAuthOrRedirect()
 
   try {
+    if (id) {
+      const ticket = await prisma.ticket.findUnique({
+        where: { id },
+      })
+      if (!ticket || !isOwner(user, ticket)) {
+        return toActionState('ERROR', 'Not authorized')
+      }
+    }
+
     const data = UpsertTicketSchema.parse({
       title: formData.get('title'),
       content: formData.get('content'),

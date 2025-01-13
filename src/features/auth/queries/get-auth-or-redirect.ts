@@ -8,4 +8,6 @@ export const getAuthOrRedirect = async () => {
   if (!user) {
     redirect(signInPath())
   }
+
+  return { user }
 }

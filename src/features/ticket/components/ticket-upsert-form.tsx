@@ -16,6 +16,7 @@ import {
   DatePicker,
   ImperativeHandleFromDatePicker,
 } from '@/components/date-picker'
+import { Textarea } from '@/components/ui/textarea'
 
 interface TicketUpsertFormProps {
   ticket?: Ticket
@@ -53,9 +54,8 @@ export const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
       <FieldError actionState={actionState} name="title" />
 
       <Label htmlFor="content">Content</Label>
-      <Input
+      <Textarea
         id="content"
-        type="text"
         name="content"
         defaultValue={
           (actionState.payload?.get('content') as string) ?? ticket?.content

@@ -1,7 +1,6 @@
 // 'use client'
 
 import Link from 'next/link'
-import { Prisma } from '@prisma/client'
 import {
   LucideMoreVertical,
   LucidePencil,
@@ -24,6 +23,8 @@ import { cn } from '@/lib/utils'
 import { toCurrencyFromCent } from '@/utils/currency'
 import { TicketMoreMenu } from './ticket-more-menu'
 import { TicketWithMetadata } from '@/features/ticket/types'
+import { getAuth } from '@/features/auth/queries/get-auth'
+import { isOwner } from '@/features/auth/utils/is-owner'
 
 interface TicketItemProps {
   // 以下寫法，另一種寫法 optional
@@ -34,10 +35,12 @@ interface TicketItemProps {
   isDetail?: boolean
 }
 
-const TicketItem = ({ ticket, isDetail = false }: TicketItemProps) => {
+const TicketItem = async ({ ticket, isDetail = false }: TicketItemProps) => {
   // console.log('我是 TicketItem 🔥🔥🔥🔥')
   // 基於 ticket 是 optional，所以需要先檢查
   // if (!ticket) return null
+  const { user } = await getAuth()
+  const isTicketOwner = isOwner(user, ticket)
 
   const detailButton = (
     <Button asChild size="icon" variant="outline">
@@ -47,13 +50,13 @@ const TicketItem = ({ ticket, isDetail = false }: TicketItemProps) => {
     </Button>
   )
 
-  const editButton = (
+  const editButton = isTicketOwner ? (
     <Button asChild size="icon" variant="outline">
       <Link prefetch href={ticketEditPath(ticket.id)}>
         <LucidePencil className="w-4 h-4" />
       </Link>
     </Button>
-  )
+  ) : null
 
   // const handleDeleteTicket = async () => {
   //   await deleteTicket(ticket.id)
@@ -71,7 +74,7 @@ const TicketItem = ({ ticket, isDetail = false }: TicketItemProps) => {
   //   </form>
   // )
 
-  const moreMenu = (
+  const moreMenu = isTicketOwner ? (
     <TicketMoreMenu
       ticket={ticket}
       trigger={
@@ -80,7 +83,7 @@ const TicketItem = ({ ticket, isDetail = false }: TicketItemProps) => {
         </Button>
       }
     />
-  )
+  ) : null
 
   return (
     <div
@@ -122,7 +125,10 @@ const TicketItem = ({ ticket, isDetail = false }: TicketItemProps) => {
             {moreMenu}
           </>
         ) : (
-          detailButton
+          <>
+            {detailButton}
+            {editButton}
+          </>
         )}
       </div>
     </div>
