@@ -84,12 +84,21 @@ export default {
             transform: 'translateY(0)',
           },
         },
+        'sidebar-from-left': {
+          from: {
+            transform: 'translateX(-100%)',
+          },
+          to: {
+            transform: 'translateX(0)',
+          },
+        },
       },
       animation: {
         'fade-in-from-top': 'fade-in-from-top 0.5s ease-in-out',
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'header-from-top': 'header-from-top 0.5s ease-in-out',
+        'sidebar-from-left': 'sidebar-from-left 0.5s ease-in-out',
       },
     },
   },

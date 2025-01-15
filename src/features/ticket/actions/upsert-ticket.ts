@@ -2,7 +2,7 @@
 
 import { z } from 'zod'
 import { prisma } from '@/lib/prisma'
-import { signInPath, ticketPath, ticketsPath } from '@/paths'
+import { ticketPath, ticketsPath } from '@/paths'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import {

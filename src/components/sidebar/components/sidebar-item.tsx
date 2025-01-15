@@ -19,8 +19,9 @@ const SidebarItem = ({ isOpen, navItem }: SidebarItemProps) => {
       href={navItem.href}
       className={cn(
         buttonVariants({ variant: 'ghost' }),
-        'group relative flex h-12 justify-start',
-        isActive && 'bg-muted  font-bold hover:bg-muted'
+        'group relative flex h-12',
+        isOpen ? 'justify-start' : 'justify-center',
+        isActive && 'bg-muted font-bold hover:bg-muted'
       )}
     >
       {cloneElement(navItem.icon, { className: 'h-5 w-5' })}

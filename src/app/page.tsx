@@ -1,4 +1,3 @@
-import { ticketsPath } from '@/paths'
 import { Heading } from '@/components/heading'
 import { Suspense } from 'react'
 import { Spinner } from '@/components/spinner'
